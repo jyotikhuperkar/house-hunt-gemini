@@ -9,28 +9,41 @@ interface PropertyCardProps {
   title: string;
   price: string;
   location: string;
-  beds: number;
-  baths: number;
-  sqft: number;
-  imageUrl: string;
-  type: string;
+  beds?: number;
+  baths?: number;
+  sqft?: number;
+  imageUrl?: string;
+  image?: string;
+  bedrooms?: number;
+  bathrooms?: number;
+  area?: string;
+  type?: string;
   isNew?: boolean;
   onClick?: () => void;
 }
 
 export const PropertyCard = ({ 
+  id,
   title, 
   price, 
   location, 
   beds, 
   baths, 
   sqft, 
-  imageUrl, 
+  imageUrl,
+  image,
+  bedrooms,
+  bathrooms,
+  area,
   type,
   isNew = false,
   onClick 
 }: PropertyCardProps) => {
   const [isLiked, setIsLiked] = useState(false);
+  const displayImage = imageUrl || image;
+  const displayBeds = beds || bedrooms || 0;
+  const displayBaths = baths || bathrooms || 0;
+  const displaySqft = sqft || (area ? parseInt(area.replace(/[^\d]/g, '')) : 0);
 
   return (
     <Card 
@@ -39,7 +52,7 @@ export const PropertyCard = ({
     >
       <div className="relative overflow-hidden rounded-t-lg">
         <img 
-          src={imageUrl} 
+          src={displayImage} 
           alt={title}
           className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
         />
@@ -85,15 +98,15 @@ export const PropertyCard = ({
           <div className="flex items-center gap-4">
             <div className="flex items-center">
               <Bed className="h-4 w-4 mr-1" />
-              {beds} beds
+              {displayBeds} beds
             </div>
             <div className="flex items-center">
               <Bath className="h-4 w-4 mr-1" />
-              {baths} baths
+              {displayBaths} baths
             </div>
             <div className="flex items-center">
               <Square className="h-4 w-4 mr-1" />
-              {sqft.toLocaleString()} sqft
+              {displaySqft.toLocaleString()} sqft
             </div>
           </div>
         </div>
